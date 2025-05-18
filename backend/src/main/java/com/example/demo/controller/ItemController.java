@@ -10,6 +10,7 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.http.HttpStatus;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -69,8 +70,21 @@ public class ItemController {
             return ResponseEntity.badRequest().body("ファイルが空です。");
         }
 
-        // ファイルを保存する処理をここに追加します。
-        // 例: file.transferTo(new File("保存先パス"));
+        // Define the directory where files will be saved
+        Path uploadDir = Paths.get("uploads");
+
+        // Create the directory if it doesn't exist
+        if (!uploadDir.toFile().exists()) {
+            uploadDir.toFile().mkdirs();
+        }
+
+        // Save the file to the specified directory
+        try {
+            Path filePath = uploadDir.resolve(file.getOriginalFilename());
+            file.transferTo(filePath.toFile());
+        } catch (IOException e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("ファイルの保存中にエラーが発生しました。");
+        }
 
         return ResponseEntity.ok("ファイルが正常にアップロードされました。");
     }
