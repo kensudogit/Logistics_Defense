@@ -85,4 +85,10 @@ public class ItemService {
         }
         return itemRepository.saveAll(items);
     }
+
+    @Transactional(readOnly = true)
+    public Item getById(Long id) {
+        return findById(id)
+                .orElseThrow(() -> new ItemNotFoundException(id));
+    }
 }

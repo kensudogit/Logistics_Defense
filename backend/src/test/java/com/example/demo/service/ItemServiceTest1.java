@@ -13,19 +13,19 @@ class ItemServiceTest {
     private ItemService itemService;
 
     @Test
-    void findById_ShouldThrowException_WhenIdIsNull() {
+    void findByIdShouldThrowExceptionWhenIdIsNull() {
         assertThrows(IllegalArgumentException.class,
                 () -> itemService.findById(null));
     }
 
     @Test
-    void save_ShouldThrowException_WhenItemIsNull() {
+    void saveShouldThrowExceptionWhenItemIsNull() {
         assertThrows(IllegalArgumentException.class,
                 () -> itemService.save(null));
     }
 
     @Test
-    void deleteById_ShouldCallRepository() {
+    void deleteByIdShouldCallRepository() {
         Long id = 1L;
         itemService.deleteById(id);
         verify(itemRepository).deleteById(id);
